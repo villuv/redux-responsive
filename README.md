@@ -133,7 +133,6 @@ The `responsiveStateReducer` (and the reducer returned by `createResponsiveState
 
 
 - `mediaType`: (*string*) The largest breakpoint category that the browser satisfies.
-- `orientation`: (*string*) The browser orientation. Has three possible values: "portrait", "landscape", or `null`.
 - `lessThan`: (*object*) An object of booleans that indicate whether the browser is currently less than a particular breakpoint.
 - `greaterThan`: (*object*) An object of booleans that indicate whether the browser is currently greater than a particular breakpoint.
 - `is`: (*object*) An object of booleans that indicate whether the browser is current that particular breakpoint.
@@ -146,8 +145,6 @@ const state = store.getState()
 
 // browser media type (e.g. "large")
 state.browser.mediaType
-// browser orientation (takes a null value on desktops)
-state.browser.orientation
 // true if browser width is greater than the "medium" breakpoint
 state.browser.greaterThan.medium
 // true if browser.mediaType === 'small'
@@ -230,7 +227,7 @@ export default combineReducers({
 
 ### Tracking window attributes
 
-In some cases, you may want to have a `window` attributes tracked in your responsive state (for example, `width`).
+In some cases, you may want to have a `window` attributes tracked in your responsive state (for example, `width` or `orientation`).
 To accomplish this, the first step is to add the custom field as described above.
 
 ```es6

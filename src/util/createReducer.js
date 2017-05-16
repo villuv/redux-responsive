@@ -13,8 +13,6 @@ export const defaultBreakpoints = {
 }
 // media type to default to when no `window` present
 const defaultMediaType = 'infinity'
-// orientation to default to when no `window` present
-const defaultOrientation = null
 
 // a lightweight version of lodash.transform
 const transform = (obj, f) => {
@@ -159,33 +157,6 @@ function getMediaType(matchMedia, mediaQueries, infinityMediaType) {
     }, infinityMediaType)
 }
 
-
-/**
- * Gets the current media type from the global `window`.
- * @arg {object} mediaQueries - The media queries object.
- * @returns {string} The window's current media type.  This is the key of the
- * breakpoint that is the next breakpoint larger than the window.
- */
-function getOrientation(matchMedia) {
-    // if there's no window
-    if (typeof matchMedia === 'undefined') {
-        // return the default
-        return defaultOrientation
-    }
-
-    const mediaQueries = {
-        portrait: '(orientation: portrait)',
-        landscape: '(orientation: landscape)',
-    }
-
-    // there is a window, so compute the true orientation
-    return Object.keys(mediaQueries).reduce((result, query) => {
-        // return the new type if the query matches otherwise the previous one
-        return matchMedia(mediaQueries[query]).matches ? mediaQueries[query] : result
-    // use the default orientation
-    }, defaultOrientation)
-}
-
 // export the reducer factory
 export default (breakpoints, { initialMediaType, infinity = defaultMediaType, extraFields = () => ({}) } = {}) => {
     // accept null values
@@ -210,8 +181,6 @@ export default (breakpoints, { initialMediaType, infinity = defaultMediaType, ex
                                         ? initialMediaType
                                         // otherwise figure out the media type from the browser
                                         : getMediaType(matchMedia, mediaQueries, infinity)
-            // the current orientation
-            const orientation = getOrientation(matchMedia)
             // build the responsive state
             const responsiveState = {
                 _responsiveState: true,
@@ -219,7 +188,6 @@ export default (breakpoints, { initialMediaType, infinity = defaultMediaType, ex
                 greaterThan: getGreaterThan(mediaType, mediaOrdering),
                 is: getIs(mediaType, breakpoints),
                 mediaType,
-                orientation,
                 breakpoints,
             }
 
